@@ -209,12 +209,4 @@ Matt Josse
 
 This project was initially implemented as an assignment for CS6014: Networking and Network Security. No template code was provided.
 
-After completing the necessary requirements, the project was re-written as if it were its own library as described above. The objective developed from simply sending an encrypted 50kb file post-handshake protocol to providing a platform upon which any networking application could be built using a simple API to encrypt its traffic. A lot of time has been spent trying to develop a simple and intuitive API. The project has evolved from 2000+ lines of horridly organized code to a general purpose SSL library and much smaller codebase. Additional features and minor tweaks are intended for the future.
-
-### What I Learned
-
-Coming soon
-
-### Acknowledgements
-
-Coming soon
+After completing the necessary requirements, the project was re-written as if it were its own library as described above. The objective developed from simply sending an encrypted 50kb file post-handshake protocol to providing a platform upon which any networking application could be built using a simple API to encrypt its traffic.
