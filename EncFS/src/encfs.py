@@ -4,13 +4,6 @@ Note, the documentation present here is documentation for the C FUSE API, and
 may not correspond 1-to-1 with the Python FUSE API. It is included for
 informational purposes only to highlight the intended purpose of each method.
 
-This is part of the example code from the fusepy library.
-It's the python language wrapper around libFUSE, the "filesystems in userspace" library
-
-You'll need to modify the constructor (__init__), open(), create(), 
-read(), write(), truncate(), and release() methods.  See the assignment description for
-what to do
-
 """
 
 from __future__ import with_statement
