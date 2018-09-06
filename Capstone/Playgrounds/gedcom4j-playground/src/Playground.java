@@ -21,10 +21,12 @@ public class Playground {
    * @param individuals a Map consisting of Xref:Individual key-value pairs
    */
   public static void PrintAllIndividuals(Map<String, Individual> individuals) {
+    String output = "";
     for (int i = 1; i <= individuals.size(); i++) {
       String key = "@P" + i + "@"; // Xref
-      System.out.println(key + ", " + individuals.get(key));
+      output += key + ", " + individuals.get(key) + "\n";
     }
+    System.out.print(output);
   }
 
   /**
@@ -36,12 +38,14 @@ public class Playground {
    * @param individual the Individual object whose parents will be printed
    */
   public static void PrintParentsOfIndividual(Individual individual) {
+    String output = "";
     List<FamilyChild> familiesWhereChild = individual.getFamiliesWhereChild();
-    familiesWhereChild.forEach((fwc) -> {
+    for (FamilyChild fwc : familiesWhereChild) {
       Family f = fwc.getFamily();
-      System.out.println("Xref: " + f.getXref() + "\nFather: " + f.getHusband().getIndividual() + "\nMother: " +
-              f.getWife().getIndividual());
-    });
+      output += "Xref: " + f.getXref() + "\nFather: " + f.getHusband().getIndividual() + "\nMother: " +
+              f.getWife().getIndividual() + "\n";
+    }
+    System.out.print(output);
   }
 
   /**
@@ -54,10 +58,12 @@ public class Playground {
    * @param families a Map consisting of Xref:Family key-value pairs
    */
   public static void PrintAllFamilies(Map<String, Family> families) {
+    String output = "";
     for (int i = 1; i <= families.size(); i++) {
       String key = "@F" + i + "@"; // Xref
-      System.out.println(key + ", " + families.get(key));
+      output += key + ", " + families.get(key) + "\n";
     }
+    System.out.print(output);
   }
 
   public static void main(String[] args) throws IOException, GedcomParserException {
@@ -67,8 +73,8 @@ public class Playground {
 
     Gedcom g = gp.getGedcom();
 
-//    Playground.PrintAllFamilies(g.getFamilies());
-//    Playground.PrintAllIndividuals(g.getIndividuals());
+    Playground.PrintAllFamilies(g.getFamilies());
+    Playground.PrintAllIndividuals(g.getIndividuals());
     Playground.PrintParentsOfIndividual(g.getIndividuals().get("@P3@"));
   }
 
