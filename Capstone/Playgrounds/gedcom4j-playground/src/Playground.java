@@ -21,12 +21,12 @@ public class Playground {
    * @param individuals a Map consisting of Xref:Individual key-value pairs
    */
   public static void PrintAllIndividuals(Map<String, Individual> individuals) {
-    String output = "";
+    StringBuilder output = new StringBuilder();
     for (int i = 1; i <= individuals.size(); i++) {
       String key = "@P" + i + "@"; // Xref
-      output += key + ", " + individuals.get(key) + "\n";
+      output.append(key + ", " + individuals.get(key) + "\n");
     }
-    System.out.print(output);
+    System.out.print(output.toString());
   }
 
   /**
@@ -38,14 +38,14 @@ public class Playground {
    * @param individual the Individual object whose parents will be printed
    */
   public static void PrintParentsOfIndividual(Individual individual) {
-    String output = "";
+    StringBuilder output = new StringBuilder();
     List<FamilyChild> familiesWhereChild = individual.getFamiliesWhereChild();
     for (FamilyChild fwc : familiesWhereChild) {
       Family f = fwc.getFamily();
-      output += "Xref: " + f.getXref() + "\nFather: " + f.getHusband().getIndividual() + "\nMother: " +
-              f.getWife().getIndividual() + "\n";
+      output.append("Xref: " + f.getXref() + "\nFather: " + f.getHusband().getIndividual() + "\nMother: " +
+              f.getWife().getIndividual() + "\n");
     }
-    System.out.print(output);
+    System.out.print(output.toString());
   }
 
   /**
@@ -58,12 +58,12 @@ public class Playground {
    * @param families a Map consisting of Xref:Family key-value pairs
    */
   public static void PrintAllFamilies(Map<String, Family> families) {
-    String output = "";
+    StringBuilder output = new StringBuilder();
     for (int i = 1; i <= families.size(); i++) {
       String key = "@F" + i + "@"; // Xref
-      output += key + ", " + families.get(key) + "\n";
+      output.append(key + ", " + families.get(key) + "\n");
     }
-    System.out.print(output);
+    System.out.println(output.toString());
   }
 
   public static void main(String[] args) throws IOException, GedcomParserException {
@@ -73,9 +73,9 @@ public class Playground {
 
     Gedcom g = gp.getGedcom();
 
-    Playground.PrintAllFamilies(g.getFamilies());
     Playground.PrintAllIndividuals(g.getIndividuals());
     Playground.PrintParentsOfIndividual(g.getIndividuals().get("@P3@"));
+    Playground.PrintAllFamilies(g.getFamilies());
   }
 
 }
