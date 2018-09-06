@@ -12,8 +12,11 @@ import java.util.Map;
 public class Playground {
 
   /**
-   * Prints all Individual objects contained in the Map. The output is ordered by generation,
-   * youngest to oldest.
+   * Prints all Individual objects contained in the Map. Also includes the Individual Xref.
+   *
+   * The output is ordered by generation, youngest to oldest. This is not date-based, rather,
+   * it is defined by child-parent relationships. The ordering of partners is simply according
+   * to how the individuals were ordered within the imported GEDCOM file.
    *
    * @param individuals a Map consisting of Xref:Individual key-value pairs
    */
@@ -26,7 +29,9 @@ public class Playground {
 
   /**
    * Prints an Individual's parents, if they exist. "null", otherwise. Also includes the
-   * family Xref from which the data is obtained.
+   * Family Xref to which the Individual belongs as a child (FAMC).
+   *
+   * The ordering of partners is always male, female.
    *
    * @param individual the Individual object whose parents will be printed
    */
@@ -40,8 +45,11 @@ public class Playground {
   }
 
   /**
-   * Prints all Family objects contained in the Map. The output is ordered by generation,
-   * youngest to oldest.
+   * Prints all Family objects contained in the Map. Also includes the Individual Xref.
+   *
+   * The output is ordered by generation, youngest to oldest. This is not date-based, rather,
+   * it is defined by child-parent relationships. The ordering of partners is simply according
+   * to how the individuals were ordered within the imported GEDCOM file.
    *
    * @param families a Map consisting of Xref:Family key-value pairs
    */
@@ -61,7 +69,7 @@ public class Playground {
 
 //    Playground.PrintAllFamilies(g.getFamilies());
 //    Playground.PrintAllIndividuals(g.getIndividuals());
-    Playground.PrintParentsOfIndividual(g.getIndividuals().get("@P1@"));
+    Playground.PrintParentsOfIndividual(g.getIndividuals().get("@P3@"));
   }
 
 }
