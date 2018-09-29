@@ -28,15 +28,18 @@ public class GedcomImporter {
     ArrayList<Person> directLineAncestors = dag.getDirectLineAncestors(start, 2);
     directLineAncestors.forEach(person -> System.out.println(person.getName()));
 
-
 //    dag.breadthFirstTraversal(start);
 //    System.out.println();
 //    dag.depthFirstTraversal(start);
 
   }
 
+  public DAG getDag() {
+    return dag;
+  }
+
   /**
-   * Populates the underlying directed acyclic graph structure with
+   *
    *
    * @param gedcom
    */

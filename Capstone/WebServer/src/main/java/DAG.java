@@ -6,11 +6,10 @@ import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.jgrapht.traverse.BreadthFirstIterator;
 import org.jgrapht.traverse.DepthFirstIterator;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.Supplier;
 
-public class DAG implements Graph<Person, DefaultEdge> {
+public class DAG implements Graph<Person, DefaultEdge>, DatabaseService {
 
   private int size = 0; // Number of vertices
   private HashMap<Integer, Person> vertexMap = new HashMap<>(); // Maps Person.id to Person
@@ -313,5 +312,22 @@ public class DAG implements Graph<Person, DefaultEdge> {
    */
   public int size() {
     return size;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Person getPerson(int id) {
+    return vertexMap.get(id);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Collection<Person> getDirectLineAncestors(int id, int k) {
+    Person root = vertexMap.get(id);
+    return getDirectLineAncestors(root, k);
   }
 }

@@ -1,15 +1,12 @@
+import com.google.gson.Gson;
 import org.gedcom4j.exception.GedcomParserException;
-import org.jgrapht.Graph;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DirectedAcyclicGraph;
-import sun.misc.ClassLoaderUtil;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.Collection;
+
+import static spark.Spark.*;
 
 public class Playground {
 
@@ -18,11 +15,26 @@ public class Playground {
     Path path = ReusableUtil.getSystemResourcePath("TestTree4GenNameOnly.ged");
     GedcomImporter importer = new GedcomImporter(path.toString());
 
+    DatabaseService database = importer.getDag();
 
+    get("/:id/", (req, res) -> {
+      res.type("application/json");
 
+      int id = Integer.parseInt(req.params(":id"));
+      Person person = database.getPerson(id);
 
+      return new Gson().toJson(new ServerResponse(Status.SUCCESS, new Gson().toJsonTree(database.getPerson(id))));
+    });
 
+    get("/:id/:k", (req, res) -> {
+      res.type("application/json");
+
+      int id = Integer.parseInt(req.params(":id"));
+      int k = Integer.parseInt(req.params(":k"));
+      Collection<Person> persons = database.getDirectLineAncestors(id, k);
+
+      return new Gson().toJson(new ServerResponse(Status.SUCCESS, new Gson().toJsonTree(database.getDirectLineAncestors(id, k))));
+    });
     
   }
-
 }
