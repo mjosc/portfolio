@@ -19,6 +19,7 @@ public class Person {
     this.name = individual.getFormattedName();
     this.sex = individual.getSex();
 
+
   }
 
   public Person(int id, String name) {

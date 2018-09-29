@@ -3,10 +3,11 @@ import org.jgrapht.Graph;
 import org.jgrapht.GraphType;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
+import org.jgrapht.traverse.BreadthFirstIterator;
+import org.jgrapht.traverse.DepthFirstIterator;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Set;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class DAG implements Graph<Person, DefaultEdge> {
@@ -45,12 +46,21 @@ public class DAG implements Graph<Person, DefaultEdge> {
     return dag.getEdgeSupplier();
   }
 
+  /**
+   * {@inheritDoc}
+   *
+   */
   @Override
   public DefaultEdge addEdge(Person a, Person b) {
 
     int aId = a.getId();
     int bId = b.getId();
 
+    /* TODO
+     *
+     * Is there a benefit to checking whether the id exists in the vertexMap and returning
+     * null if it does not? Could also add vertices here if they do not already exist...
+     */
     a = vertexMap.get(aId);
     b = vertexMap.get(bId);
 
@@ -93,11 +103,11 @@ public class DAG implements Graph<Person, DefaultEdge> {
      *
      * This implementation is required—as opposed to the default behavior of
      * DirectedAcyclicGraph.addVertex—in order to guarantee the correct mapping between vertexMap and
-     * the underlying graph structure. Otherwise, the graph may contain vertexes with the exact same
-     * id and other member fields but different memory addresses.
+     * the underlying graph structure. Otherwise, the graph may contain vertices with the exact same
+     * id and member fields but unique memory addresses.
      */
     vertexMap.put(id, person);
-    size++;
+    size++; // TODO: Move this below return (otherwise if there's an error, something could break).
     return dag.addVertex(person);
   }
 
@@ -261,6 +271,40 @@ public class DAG implements Graph<Person, DefaultEdge> {
   @Override
   public void setEdgeWeight(DefaultEdge defaultEdge, double v) {
     dag.setEdgeWeight(defaultEdge, v);
+  }
+
+  public void breadthFirstTraversal(Person start) {
+
+    Iterator<Person> iterator = new BreadthFirstIterator<>(dag, start);
+    while (iterator.hasNext()) {
+      Person person = iterator.next();
+      System.out.println(person.getName());
+    }
+  }
+
+  //    Person start = dag.vertexSet().stream().filter(
+  //            person -> person.getId() == 1).findAny().get();
+
+  public ArrayList<Person> getDirectLineAncestors(Person root, int generations) {
+
+    Iterator<Person> iterator = new BreadthFirstIterator<>(dag, root);
+    int numPersons = (int) Math.pow(2, generations) + 1;
+    ArrayList<Person> ancestors = new ArrayList<>(numPersons);
+
+    while (iterator.hasNext() && numPersons > 0) {
+      ancestors.add(iterator.next());
+      numPersons--;
+    }
+
+    return ancestors;
+  }
+
+  public void depthFirstTraversal(Person start) {
+    Iterator<Person> iterator = new DepthFirstIterator<>(dag, start);
+    while (iterator.hasNext()) {
+      Person person = iterator.next();
+      System.out.println(person.getName());
+    }
   }
 
   /* TODO
