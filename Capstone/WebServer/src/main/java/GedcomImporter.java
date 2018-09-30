@@ -8,9 +8,8 @@ import java.util.*;
 
 public class GedcomImporter {
 
-  public static final int CHILD = 0;
-  public static final int FATHER = 1;
-  public static final int MOTHER = 2;
+  public static final int FATHER = 0;
+  public static final int MOTHER = 1;
 
   private Gedcom gedcom;
   private DAG dag = new DAG();
@@ -25,12 +24,8 @@ public class GedcomImporter {
     generateDAG(gedcom);
 
     Person start = dag.getVertex(1);
-    ArrayList<Person> directLineAncestors = dag.getDirectLineAncestors(start, 2);
+    ArrayList<Person> directLineAncestors = dag.getDirectLineAncestors(start, 3);
     directLineAncestors.forEach(person -> System.out.println(person.getName()));
-
-//    dag.breadthFirstTraversal(start);
-//    System.out.println();
-//    dag.depthFirstTraversal(start);
 
   }
 
@@ -45,24 +40,16 @@ public class GedcomImporter {
    */
   private void generateDAG(Gedcom gedcom) {
 
-    /*
-     * TODO
-     *
-     * How cache friendly is this?
-     */
-
     Map<String, Individual> individualMap = gedcom.getIndividuals();
-    Individual[] individuals = new Individual[3];
-    Person[] persons = new Person[3];
+    IndividualReference[] individualReferences = new IndividualReference[2];
 
     for (String xref : individualMap.keySet()) {
 
-      individuals[CHILD] = individualMap.get(xref);
-      persons[CHILD] = new Person(individuals[CHILD]);
+      Individual individualChild = individualMap.get(xref);
+      Person personChild = new Person(individualChild);
+      dag.addVertex(personChild);
 
-      dag.addVertex(persons[CHILD]);
-
-      List<FamilyChild> familiesWhereChild = individuals[CHILD].getFamiliesWhereChild();
+      List<FamilyChild> familiesWhereChild = individualChild.getFamiliesWhereChild();
       if (familiesWhereChild == null) {
         continue;
       }
@@ -70,14 +57,17 @@ public class GedcomImporter {
       for (FamilyChild fc : familiesWhereChild) {
         Family family = fc.getFamily();
 
-        individuals[FATHER] = family.getHusband().getIndividual();
-        individuals[MOTHER] = family.getWife().getIndividual();
-        persons[FATHER] = new Person(individuals[FATHER]);
-        persons[MOTHER] = new Person(individuals[MOTHER]);
+        individualReferences[FATHER] = family.getHusband();
+        individualReferences[MOTHER] = family.getWife();
 
-        for (int i = 1; i < individuals.length; i++) {
-          dag.addVertex(persons[i]);
-          dag.addEdge(persons[CHILD], persons[i]);
+        for (int i = 0; i < individualReferences.length; i++) {
+          IndividualReference individualReference = individualReferences[i];
+          if (individualReference != null) {
+            Individual individualParent = individualReference.getIndividual();
+            Person personParent = new Person(individualParent);
+            dag.addVertex(personParent);
+            dag.addEdge(personChild, personParent);
+          }
         }
       }
     }
