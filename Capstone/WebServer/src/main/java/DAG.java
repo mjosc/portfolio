@@ -274,7 +274,7 @@ public class DAG implements Graph<Person, DefaultEdge>, DatabaseService {
 
   public void breadthFirstTraversal(Person start) {
 
-    Iterator<Person> iterator = new BreadthFirstIterator<>(dag, start);
+    BreadthFirstIterator<Person, DefaultEdge> iterator = new BreadthFirstIterator<>(dag, start);
     while (iterator.hasNext()) {
       Person person = iterator.next();
       System.out.println(person.getName());
@@ -285,14 +285,15 @@ public class DAG implements Graph<Person, DefaultEdge>, DatabaseService {
   //            person -> person.getId() == 1).findAny().get();
 
   public ArrayList<Person> getDirectLineAncestors(Person root, int generations) {
+    BreadthFirstIterator<Person, DefaultEdge> iterator = new BreadthFirstIterator<>(dag, root);
+    ArrayList<Person> ancestors = new ArrayList<>();
 
-    Iterator<Person> iterator = new BreadthFirstIterator<>(dag, root);
-    int numPersons = (int) Math.pow(2, generations) + 1;
-    ArrayList<Person> ancestors = new ArrayList<>(numPersons);
-
-    while (iterator.hasNext() && numPersons > 0) {
-      ancestors.add(iterator.next());
-      numPersons--;
+    while (iterator.hasNext()) {
+      Person person = iterator.next();
+      if (iterator.getDepth(person) >= generations) {
+        break;
+      }
+      ancestors.add(person);
     }
 
     return ancestors;
@@ -326,8 +327,8 @@ public class DAG implements Graph<Person, DefaultEdge>, DatabaseService {
    * {@inheritDoc}
    */
   @Override
-  public Collection<Person> getDirectLineAncestors(int id, int k) {
-    Person root = vertexMap.get(id);
-    return getDirectLineAncestors(root, k);
+  public Collection<Person> getDirectLineAncestors(int rootId, int generations) {
+    Person root = vertexMap.get(rootId);
+    return getDirectLineAncestors(root, generations);
   }
 }
