@@ -11,9 +11,7 @@ public class SerializerUtil {
     public JsonElement serialize(FamilyGraph.Family family, Type type,
                                  JsonSerializationContext jsonSerializationContext) {
 
-      JsonObject jsonFamily = new JsonObject();
-      jsonFamily.addProperty("id", family.getId());
-      return jsonFamily;
+      return new JsonPrimitive(family.getId());
     }
   }
 
