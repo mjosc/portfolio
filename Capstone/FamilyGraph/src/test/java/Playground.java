@@ -1,3 +1,5 @@
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 public class Playground {
@@ -41,7 +43,8 @@ public class Playground {
     fGraph.addChildToFamily(mother, f3);
 
     ArrayList<FamilyGraph.Person> myDirectLine = fGraph.getDirectLineAncestry(me);
-    myDirectLine.forEach(person -> System.out.println(person.getName()));
+    System.out.println(myDirectLine.size());
+    myDirectLine.forEach(person -> System.out.println(new Gson().toJson(person)));
 
   }
 }
