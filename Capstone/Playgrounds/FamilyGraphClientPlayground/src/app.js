@@ -1,4 +1,32 @@
+// https://www.sitepoint.com/javascript-private-class-fields/
+
 import { FamilyGraph, Person, Family } from './FamilyGraph.js'
+
+let parseChildFamilies = function(person, childFamilies) {
+  childFamilies.forEach(id => {
+    let family;
+    if (!fgraph.hasFamily(id)) {
+      family = new Family(id);
+      fgraph.addFamily(family);
+    } else {
+      family = fgraph.getFamily(id);
+    }
+    fgraph.addChildFamilyEdge(person, family);
+  });
+}
+
+let parseParentFamilies = function(person, parentFamilies) {
+  parentFamilies.forEach(id => {
+    let family;
+    if (!fgraph.hasFamily(id)) {
+      family = new Family(id);
+      fgraph.addFamily(family);
+    } else {
+      family = fgraph.getFamily(id);
+    }
+    fgraph.addParentFamilyEdge(person, family);
+  });
+}
 
 let fgraph = new FamilyGraph();
 
@@ -9,41 +37,30 @@ let fgraph = new FamilyGraph();
  * 7 persons
  * 3 families
  */
-let jsonArr = "[{\"id\":1,\"name\":\"me\",\"childFamily\":1,\"parentFamilies\":[]},{\"id\":2,\"name\":\"father\",\"childFamily\":2,\"parentFamilies\":[1]},{\"id\":3,\"name\":\"mother\",\"childFamily\":3,\"parentFamilies\":[1]},{\"id\":4,\"name\":\"grandFatherFather\",\"parentFamilies\":[2]},{\"id\":5,\"name\":\"grandMotherFather\",\"parentFamilies\":[2]},{\"id\":6,\"name\":\"grandFatherMother\",\"parentFamilies\":[3]},{\"id\":7,\"name\":\"grandMotherMother\",\"parentFamilies\":[3]}]"
+let jsonArr = "[{\"id\":1,\"name\":\"me\",\"childFamilies\":[1],\"parentFamilies\":[]},{\"id\":2,\"name\":\"father\",\"childFamilies\":[2],\"parentFamilies\":[1]},{\"id\":3,\"name\":\"mother\",\"childFamilies\":[3],\"parentFamilies\":[1]},{\"id\":4,\"name\":\"grandFatherFather\",\"childFamilies\":[],\"parentFamilies\":[2]},{\"id\":5,\"name\":\"grandMotherFather\",\"childFamilies\":[],\"parentFamilies\":[2]},{\"id\":6,\"name\":\"grandFatherMother\",\"childFamilies\":[],\"parentFamilies\":[3]},{\"id\":7,\"name\":\"grandMotherMother\",\"childFamilies\":[],\"parentFamilies\":[3]}]"
 
 let data = JSON.parse(jsonArr);
 
 data.forEach(obj => {
-  fgraph.addPerson(new Person(obj.id, obj.name));
-  if (obj.hasOwnProperty('childFamily')) {
-    // This person is listed as a child in at least one family.
-    /* TODO
-     * There may be a lot of overhead, creating a new Family instance before comfirming whether that
-     * family already exists. This may require some refactoring of the FamilyGraph methods to simply
-     * first check whether a Family exists before creating one.
-     */ 
-    fgraph.addFamily(new Family(obj.childFamily));
-    /* TODO
-     * Add bidirectional edges (child <-> family).
-     */ 
-  }
-  obj.parentFamilies.forEach(id => {
-    // Each person will have 0 or more familes in which they are a parent.
-    fgraph.addFamily(new Family(id))
-    /* TODO
-     * Add bidirectional edges (parent <-> family).
-     */ 
-  });
+
+  let p = new Person(obj.id, obj.name);
+  fgraph.addPerson(p);
+
+  parseChildFamilies(p, obj.childFamilies);
+  parseParentFamilies(p, obj.parentFamilies);
 
 });
 
-console.log(fgraph.personMap.size);
-console.log(fgraph.familyMap.size);
+// console.log(fgraph.personMap.size);
+// console.log(fgraph.familyMap.size);
 
-fgraph.personMap.forEach(val => {
-  console.log(val);
-});
+fgraph.directLineTraversal(fgraph.getPerson(1));
+// console.log(fgraph.getPerson(3).childFamilies[0].parents);
 
-fgraph.familyMap.forEach(val => {
-  console.log(val);
-});
+// fgraph.personMap.forEach(val => {
+//   console.log(val);
+// });
+
+// fgraph.familyMap.forEach(val => {
+//   console.log(val);
+// });
