@@ -51,16 +51,9 @@ data.forEach(obj => {
 
 });
 
-// console.log(fgraph.personMap.size);
-// console.log(fgraph.familyMap.size);
 
-fgraph.directLineTraversal(fgraph.getPerson(1));
-// console.log(fgraph.getPerson(3).childFamilies[0].parents);
+let dl = fgraph.directLineTraversal(fgraph.getPerson(1));
 
-// fgraph.personMap.forEach(val => {
-//   console.log(val);
-// });
+let children = fgraph.childrenInFamily(fgraph.getFamily(2));
+children.forEach(child => console.log(child.name));
 
-// fgraph.familyMap.forEach(val => {
-//   console.log(val);
-// });

@@ -39,6 +39,10 @@ class FamilyGraph {
     parent.addParentFamily(family);
   }
 
+  childrenInFamily(f) {
+    return f.children;
+  }
+
   directLineTraversal(root) {
     let ancestors = [root];
     this.directLineRecursion(root, ancestors);
@@ -46,14 +50,18 @@ class FamilyGraph {
   }
 
   directLineRecursion(root, ancestors) {
-    console.log(root.name);
+  
     if (root.childFamilies.length < 1) {
-      // console.log(root.id);
       return;
     }
-    // console.log(root.name);
-    this.directLineRecursion(root.childFamilies[0].parents[0]);
-    this.directLineRecursion(root.childFamilies[0].parents[1]);
+    
+    let family = root.childFamilies[0];
+
+    ancestors.push(family.parents[0]);
+    ancestors.push(family.parents[1]);
+
+    this.directLineRecursion(family.parents[0], ancestors);
+    this.directLineRecursion(family.parents[1], ancestors);
   }
 }
 
