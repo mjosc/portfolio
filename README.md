@@ -6,6 +6,9 @@ A brief selection of projects built while a student of the Master of Software De
 ### EncFS
 An encrpyted filesystem implementing the FUSE interface (OSXFuse) in order to avoid direct interaction with the kernel. The encryption algorithms are provided via the cryptography library.
 
+### FitApp
+A seemingly random-featured Android app implementing the use of sensors, AWS cloud services, a Room database, and a custom ViewModel combined with Android's official architecture. A three person group effort.
+
 ### KNN
 An implementation of data structures commonly used to support efficient K-nearest neighbor queries.
 
