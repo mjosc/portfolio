@@ -4,181 +4,130 @@ import java.util.LinkedList;
 
 public class FamilyGraph {
 
-  private static final int NON_EXISTENT = -1;
-
   private HashMap<Integer, Person> personMap = new HashMap<>();
-  private HashMap<PartnershipKey, Partnership> familyMap = new HashMap<>();
-
-  public class Person {
-
-    private int id;
-    private String name;
-    private Partnership parents = new Partnership();
-    private LinkedList<Partnership> partners = new LinkedList<>();
-
-    public Person(IndividualConstruct individual) {
-      this.id = individual.getId();
-      this.name = individual.getName();
-    }
-
-    public int getId() {
-      return id;
-    }
-
-    public Partnership getParents() {
-      return parents;
-    }
-
-  } // class::Person
-
-  public class Partnership {
-
-    private static final int MAX_PERSONS_IN_PARTNERSHIP = 2;
-    private static final int A = 0;
-    private static final int B = 1;
-
-    private Person[] partners = new Person[MAX_PERSONS_IN_PARTNERSHIP];
-    private ArrayList<Person> children = new ArrayList<>(); // ArrayList vs LinkedList b/c most common operation is
-    // iteration, not removal/insertion
-
-    public Partnership() {
-
-    }
-
-    public Partnership(Person a, Person b) {
-      this.partners[A] = a;
-      this.partners[B] = b;
-    }
-
-    public boolean addChild(Person child) {
-      return children.add(child);
-    }
-
-    public Person[] getPartners() {
-      return partners;
-    }
-
-  } // class::Partnership
+  private HashMap<Integer, Family> familyMap = new HashMap<>();
 
   public FamilyGraph() {
 
   }
 
   /**
-   * Adds a new vertex to this graph if not already present; the vertex being derived from the
-   * {@link IndividualConstruct}. In other words, if this graph contains no vertex, v, such that v.id ==
-   * IndividualConstruct.getId, a new vertex is added to the graph. Either way, the id of the vertex is returned.
+   * Adds a new {@link Person} to this graph if not already present; the Person being derived from the
+   * {@link IndividualConstruct}. In other words, if this graph contains no Person, p, such that
+   * p.id == ic.getId, a new Person is added to the graph and that Person is returned from this method.
+   * Otherwise, the Person with the corresponding id is returned from the graph.
    *
-   * @param individual object implementing IndividualConstruct from which a new vertex is to be created and added to
-   *                   this graph.
-   * @return id of the vertex, whether new or already contained in the graph.
+   * @param ic implemenation of IndividualConstruct from which a new Person is to be created and added to this
+   *           graph.
+   * @return Person contained in the graph with an id corresponding to ic.getId, whether said Person was
+   * created as a result of this method call or existed prior.
    */
-  public int addPerson(IndividualConstruct individual) {
-    int id = individual.getId();
+  public Person addPerson(IndividualConstruct ic) {
+    int id = ic.getId();
+    Person person;
     if (!personMap.containsKey(id)) {
-      Person person = new Person(individual);
+      person = new Person(ic);
       personMap.put(id, person);
+    } else {
+      person = personMap.get(id);
     }
-    /* TODO
-     * Would it be better to return the DUPLICATE_ID (-1) if a vertex already exists? The benefit of the current
-     * implementation is a valid handle for the vertex with the specified id is guaranteed to be returned. Should a
-     * duplicate IndividualConstruct exist, the original handle will be returned for subsequent use in creating edges
-     * between vertices. This eliminates the need to check for an error and make an additional call to a getter in
-     * order to retrieve the correct handle. However, the addition of a duplicate IndividualConstruct will fail
-     * silently. This implementation requires the user to use update and replace methods to modify the intended vertex.
-     */
-    return id;
+    return person;
   }
 
+  /**
+   * Returns the {@link Person} as specified by the id, if said Person is present in this graph. In other words, if this
+   * graph contains a Person, p, such that p.id == id, this Person is returned. If p does not exist in the graph,
+   * returns null.
+   *
+   * @param id id of the Person to be returned.
+   * @return Person with the specified id if present in the graph, null otherwise.
+   */
   public Person getPerson(int id) {
     /* TODO
-     * Implement deep copy.
+     * Implement deep copy?
      */
     return personMap.get(id);
   }
 
-  public void addParents(int childId, int fatherId, int motherId) {
+  public Family addFamily(FamilyConstruct fc) {
+    int id = fc.getId();
+    Family family;
+    if (!familyMap.containsKey(id)) {
+      family = new Family(fc);
+      familyMap.put(id, family);
+    } else {
+      family = familyMap.get(id);
+    }
+    return family;
+  }
 
-    if (!contains(childId, fatherId, motherId)) {
+  public Family getFamily(int id) {
+    /* TODO
+     * Implement deep copy?
+     */
+    return familyMap.get(id);
+  }
+
+  public void addParentsToFamily(Family family, Person parentA, Person parentB) {
+    if (!familyMap.containsKey(family.getId()) || !contains(parentA, parentB)) {
+      throw new IllegalArgumentException();
+    }
+    family.addParents(parentA, parentB);
+    parentA.addParentFamily(family);
+    parentB.addParentFamily(family);
+  }
+
+  public void addChildrenToFamily(Family family, Person... children) {
+    if (!familyMap.containsKey(family.getId()) || !contains(children)) {
+      throw new IllegalArgumentException();
+    }
+    family.addChildren(children);
+    for (Person child : children) {
+      child.addChildFamily(family);
+    }
+  }
+
+  public ArrayList<Person> getDirectLine(int rootId) {
+    ArrayList<Person> result = new ArrayList<>();
+    Person root = personMap.get(rootId);
+    result.add(root);
+    recurseDirectLine(root, result);
+    return result;
+  }
+
+  private void recurseDirectLine(Person root, ArrayList<Person> result) {
+
+    System.out.println(root.getName());
+    Family childFamily = root.childFamily;
+    if (childFamily == null) {
       return;
     }
 
-    Person child = personMap.get(childId);
-    Person father = personMap.get(fatherId);
-    Person mother = personMap.get(motherId);
+    Person[] parents = childFamily.parents;
 
-    Partnership partnership = child.getParents();
-    Person[] parents = partnership.getPartners();
+    result.add(parents[0]);
+    result.add(parents[1]);
 
-    parents[0] = father;
-    parents[1] = mother;
+    recurseDirectLine(parents[0], result);
+    recurseDirectLine(parents[1], result);
 
   }
 
-  public PartnershipKey addFamily(int a, int b) {
-
-    // Both partners must exist in the graph before a family can be defined between them.
-    if (!contains(a, b)) {
-      return null;
-    }
-
-    PartnershipKey partnershipKey = new PartnershipKey(a, b);
-    if (!familyMap.containsKey(partnershipKey)) {
-      Person personA = personMap.get(a); // May be null if a == NON_EXISTENT
-      Person personB = personMap.get(b); // May be null if a == NON_EXISTENT
-      Partnership partnership = new Partnership(personA, personB);
-      familyMap.put(partnershipKey, partnership);
-    }
-
-    return partnershipKey;
-  }
-
-  public boolean addChild(PartnershipKey partnershipKey, int childId) {
-    if (!familyMap.containsKey(partnershipKey)) {
-      return false;
-    }
-    Partnership partnership = familyMap.get(partnershipKey);
-    Person child = personMap.get(childId);
-    return partnership.addChild(child);
-  }
-
-  public int size() {
+  public int nPersons() {
     return personMap.size();
   }
 
-  private boolean contains(int... ids) {
-    for (int id : ids) {
-      if (!personMap.containsKey(id)) {
+  public int nFamilies() {
+    return familyMap.size();
+  }
+
+  private boolean contains(Person... persons) {
+    for (Person p : persons) {
+      if (!personMap.containsKey(p.getId())) {
         return false;
       }
     }
     return true;
-  }
-
-  public ArrayList<Person> getDirectLine(int rootId) {
-    Person root = personMap.get(rootId);
-    ArrayList<Person> directLine = new ArrayList<>();
-    recurseParents(root, directLine);
-    return directLine;
-  }
-
-  private void recurseParents(Person root, ArrayList<Person> persons) {
-
-    persons.add(root);
-
-    Partnership partnership = root.getParents();
-    if (partnership == null) {
-      return;
-    }
-
-    Person[] parents = partnership.getPartners();
-
-    persons.add(parents[0]);
-    persons.add(parents[1]);
-
-    // breadth-first search
-    recurseParents(parents[0], persons);
-    recurseParents(parents[1], persons);
   }
 
 } // class::FamilyGraph

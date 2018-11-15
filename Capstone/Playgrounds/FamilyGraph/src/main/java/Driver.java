@@ -1,46 +1,52 @@
+import com.google.gson.*;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class Driver {
 
   public static void main(String[] args) {
 
-//    PartnershipKey a = new PartnershipKey(0, 1);
-//    PartnershipKey b = new PartnershipKey(1, 0);
-//
-//    System.out.println(a.equals(b));
-//    System.out.println(b.equals(a));
-//
-//    System.out.println(a.hashCode());
-//    System.out.println(b.hashCode());
-//
-//    HashMap<PartnershipKey, Integer> hashMap = new HashMap<>();
-//    hashMap.put(a, 1);
-//    hashMap.put(b, 1);
-//
-//    System.out.println(hashMap.size());
-
     FamilyGraph fgraph = new FamilyGraph();
 
-    int child, father, mother;
-    PartnershipKey partnershipKey;
+    Person matt = fgraph.addPerson(new TestIndividual(1, "matt"));
+    Person david = fgraph.addPerson(new TestIndividual(2, "david"));
+    Person sarah = fgraph.addPerson(new TestIndividual(3, "sarah"));
+    Person mike = fgraph.addPerson(new TestIndividual(4, "mike"));
+    Person virginia = fgraph.addPerson(new TestIndividual(5, "virginia"));
+    Person ned = fgraph.addPerson(new TestIndividual(6, "ned"));
+    Person wanda = fgraph.addPerson(new TestIndividual(7, "wanda"));
 
-    child = fgraph.addPerson(new TestIndividual(1, "matt"));
-    father = fgraph.addPerson(new TestIndividual(2, "david"));
-    mother = fgraph.addPerson(new TestIndividual(3, "sarah"));
+    Family f1 = fgraph.addFamily(new TestFamily(1)); // david & sarah
+    Family f2 = fgraph.addFamily(new TestFamily(2)); // mike & virginia
+    Family f3 = fgraph.addFamily(new TestFamily(3)); // ned & wanda
 
-    fgraph.addParents(child, father, mother);
+    fgraph.addParentsToFamily(f1, david, sarah);
+    fgraph.addParentsToFamily(f2, mike, virginia);
+    fgraph.addParentsToFamily(f3, ned, wanda);
 
-    ArrayList<FamilyGraph.Person> directLine = fgraph.getDirectLine(child);
+    fgraph.addChildrenToFamily(f1, matt);
+    fgraph.addChildrenToFamily(f2, david);
+    fgraph.addChildrenToFamily(f3, sarah);
 
-    directLine.forEach(person -> System.out.println(person.getId()));
+    ArrayList<Person> directLineMatt = fgraph.getDirectLine(matt.getId());
+    directLineMatt.forEach(person -> System.out.println(person.getName()));
 
-//    child = father;
-//
-//
-//    fgraph.addPerson(new TestIndividual(4, "mike"));
-//    fgraph.addPerson(new TestIndividual(5, "virginia"));
-//    fgraph.addPerson(new TestIndividual(6, "ned"));
-//    fgraph.addPerson(new TestIndividual(7, "wanda"));
+    System.out.println(new Gson().toJson(matt));
+
+//    Driver.printPersonLinks(ned);
+
+  }
+
+  public static void printPersonLinks(Person person) {
+    System.out.println(person.getName());
+    System.out.println("nParentFam: " + person.parentFamilies.size());
+    System.out.println("nChildFam: " + (person.childFamily == null ? 0: 1));
+
+    Family childFam = person.childFamily;
+
+    System.out.println("parent: " + (childFam == null ? "n/a" : childFam.parents[0].getName()));
+    System.out.println("parent: " + (childFam == null ? "n/a" : childFam.parents[1].getName()));
 
   }
 }

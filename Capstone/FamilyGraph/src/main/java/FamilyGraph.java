@@ -1,9 +1,12 @@
 import com.google.gson.annotations.JsonAdapter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FamilyGraph {
+
+  public static final String ILLEGAL_ARGUMENT = FamilyGraph.class + " does not contain all the specified arguments";
 
   private HashMap<Integer, Person> personMap = new HashMap<>(); // Person.id : Person
   private HashMap<Integer, Family> familyMap = new HashMap<>(); // Family.id : Family
@@ -65,13 +68,7 @@ public class FamilyGraph {
 
   public boolean addChildToFamily(Person child, Family f) {
     if (!personMap.containsKey(child.getId()) || !familyMap.containsKey(f.getId())) {
-
-      /* TODO
-       * Throw Exception or return false? Returning false is more consistent with the other methods in this class and
-       * other libraries I've seen/used. However, this provides no user-feedback as to what went wrong. For example, the
-       * Person, the Family, or both may not have existed in the graph before this method call was made.
-       */
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException(ILLEGAL_ARGUMENT);
     }
 
     addChildEdge(child, f);
@@ -81,7 +78,7 @@ public class FamilyGraph {
 
   public boolean addParentToFamily(Person parent, Family f) {
     if (!personMap.containsKey(parent.getId()) || !familyMap.containsKey(f.getId())) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException(ILLEGAL_ARGUMENT);
     }
 
     int nParents = f.nParents;
@@ -125,16 +122,16 @@ public class FamilyGraph {
 
   private void recurseDirectLine(Person root, ArrayList<Person> directLine) {
 
-    /* TODO
-     * Refactor.
-     */
-
-    Family childFamily = root.childFamily;
-    if (childFamily == null) {
+    ArrayList<Family> childFamilies = root.childFamilies;
+    if (childFamilies.size() < 1) {
       return;
     }
 
-    Person[] parents = childFamily.parents;
+    /* TODO
+     * Remove hard-coded index 0. The addition of the ArrayList to support multiple child families is for adopted
+     * families and to have a more uniform json interface on the client-side.
+     */
+    Person[] parents = childFamilies.get(0).parents;
     Person parentA = parents[0];
     Person parentB = parents[1];
 
@@ -150,14 +147,26 @@ public class FamilyGraph {
 
     private int id;
     private String name;
-    @JsonAdapter(SerializerUtil.FamilySerializer.class)
-    private Family childFamily;
+    private int age;
+    private LocalDate birthDate;
+    private LocalDate deathDate;
+
+    /* TODO
+     * Possibly change this back to a single Family instance. Changed to support adoptive families and a more uniform
+     * json interface.
+     */
+    @JsonAdapter(SerializerUtil.FamilyListSerializer.class)
+    private ArrayList<Family> childFamilies = new ArrayList<>();
+
     @JsonAdapter(SerializerUtil.FamilyListSerializer.class)
     private ArrayList<Family> parentFamilies = new ArrayList<>();
 
     public Person(PersonConstruct pc) {
       this.id = pc.getId();
       this.name = pc.getName();
+      this.age = pc.getAge();
+      this.birthDate = pc.getBirthDate();
+      this.deathDate = pc.getDeathDate();
     }
 
     public int getId() {
@@ -173,7 +182,7 @@ public class FamilyGraph {
     }
 
     private void addChildFamily(Family f) {
-      childFamily = f;
+      childFamilies.add(f);
     }
   } // End Person
 
@@ -183,15 +192,21 @@ public class FamilyGraph {
 
     private int id;
     private int nParents = 0;
+
     @JsonAdapter(SerializerUtil.PersonArraySerializer.class)
     private Person[] parents = new Person[MAX_PARENTS];
+
     @JsonAdapter(SerializerUtil.PersonListSerializer.class)
     private ArrayList<Person> children = new ArrayList<>();
+
 
     public Family(FamilyConstruct fc) {
       this.id = fc.getId();
     }
 
+    /**
+     * {@link #id}
+     */
     public int getId() {
       return id;
     }

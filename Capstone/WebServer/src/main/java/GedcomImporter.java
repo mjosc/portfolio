@@ -1,6 +1,11 @@
+import com.google.gson.Gson;
 import org.gedcom4j.exception.GedcomParserException;
 import org.gedcom4j.model.*;
 import org.gedcom4j.parser.GedcomParser;
+import org.jgrapht.graph.DefaultWeightedEdge;
+import org.jgrapht.graph.DirectedAcyclicGraph;
+import org.jgrapht.graph.SimpleDirectedWeightedGraph;
+import org.jgrapht.traverse.BreadthFirstIterator;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
@@ -26,6 +31,16 @@ public class GedcomImporter {
     Person start = dag.getVertex(1);
     ArrayList<Person> directLineAncestors = dag.getDirectLineAncestors(start, 3);
     directLineAncestors.forEach(person -> System.out.println(person.getName()));
+
+//    Map<String, Individual> individualMap = gedcom.getIndividuals();
+//    Individual individual = individualMap.get("@P1@");
+
+//    CustomPerson person = new CustomPerson(individual);
+//    person.addParent(new CustomPerson(individual));
+//
+//    System.out.println(new Gson().toJson(person));
+
+
 
   }
 
@@ -67,6 +82,28 @@ public class GedcomImporter {
             Person personParent = new Person(individualParent);
             dag.addVertex(personParent);
             dag.addEdge(personChild, personParent);
+
+//            personChild.addParent();
+            /* TODO
+             *
+             * It doesn't make a whole lot of sense to add an Edge and then add an id to the parent tag. This is
+             * duplicate data and the primary reason for creating my own graph. Are there ways around this?
+             *
+             */
+
+
+          } else {
+            /* TODO
+             *
+             * This is the current solution for knowing the relationships between nodes. If there is a placeholder
+             * for non-existent nodes, we can calculate the number of generations by 2^k. Is there a better way? Such
+             * as assigning ids?
+             *
+             * This implementation simply adds a Person with no valid data.
+             */
+            Person personMissingParent = new Person();
+            dag.addVertex(personMissingParent);
+            dag.addEdge(personChild, personMissingParent);
           }
         }
       }

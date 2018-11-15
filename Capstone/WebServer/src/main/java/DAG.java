@@ -59,6 +59,8 @@ public class DAG implements Graph<Person, DefaultEdge>, DatabaseService {
      *
      * Is there a benefit to checking whether the id exists in the vertexMap and returning
      * null if it does not? Could also add vertices here if they do not already exist...
+     *
+     * Need to ensure a.equals(whateverIsInVertexMap).
      */
     a = vertexMap.get(aId);
     b = vertexMap.get(bId);
@@ -284,7 +286,10 @@ public class DAG implements Graph<Person, DefaultEdge>, DatabaseService {
   //    Person start = dag.vertexSet().stream().filter(
   //            person -> person.getId() == 1).findAny().get();
 
+  // Now supports null ancestors without crashing.
+  // TODO: Make a recursive method for retrieving all siblings, aunts, uncles, and cousins.
   public ArrayList<Person> getDirectLineAncestors(Person root, int generations) {
+
     BreadthFirstIterator<Person, DefaultEdge> iterator = new BreadthFirstIterator<>(dag, root);
     ArrayList<Person> ancestors = new ArrayList<>();
 

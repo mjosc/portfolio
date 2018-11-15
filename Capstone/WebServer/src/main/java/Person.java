@@ -2,14 +2,21 @@ import org.gedcom4j.factory.Sex;
 import org.gedcom4j.model.Individual;
 import org.gedcom4j.model.StringWithCustomFacts;
 
+import java.util.LinkedList;
+
 public class Person {
+
+  private static final int UNASSIGNED = -1;
 
   private int id;
   private String name;
   private StringWithCustomFacts sex; // TODO: custom enum instead?
 
-  public Person(int id) {
-    this.id = id;
+  private LinkedList<Integer> partners;
+  private LinkedList<Integer> children;
+
+  public Person() {
+    this.id = UNASSIGNED;
   }
 
   public Person(Individual individual) {
@@ -18,8 +25,6 @@ public class Person {
     this.id = xrefToId(xref);
     this.name = individual.getFormattedName();
     this.sex = individual.getSex();
-
-
   }
 
   public Person(int id, String name) {

@@ -1,0 +1,36 @@
+****************************************************************************************************
+Q1. Lambda expressions.
+****************************************************************************************************
+
+/**
+ * Original method for finding the parents of an individual.
+ *
+ * Lambda expression.
+ */
+public static void PrintParentsOfIndividual(Individual individual) {
+  List<FamilyChild> familiesWhereChild = individual.getFamiliesWhereChild();
+  familiesWhereChild.forEach((fwc) -> {
+    Family f = fwc.getFamily();
+    System.out.println("Xref: " + f.getXref() + "\nFather: " + f.getHusband().getIndividual() + "\nMother: " + f.getWife().getIndividual() + "\n");
+  });
+}
+
+/**
+ * I/O optimized method for finding the parents of an individual.
+ *
+ * Removal of lambda expression. In order to use the 'forEach' method as done previously,
+ * the 'output' variable appears to require an atomic type. Where is there a possible
+ * race condition? Obviously, I need to study up on lambda expressions.
+ */
+public static void PrintParentsOfIndividual(Individual individual) {
+  String output = "";
+  List<FamilyChild> familiesWhereChild = individual.getFamiliesWhereChild();
+  for (FamilyChild fwc : familiesWhereChild) {
+    Family f = fwc.getFamily();
+    output += "Xref: " + f.getXref() + "\nFather: " + f.getHusband().getIndividual() + "\nMother: " + f.getWife().getIndividual() + "\n";
+  }
+  System.out.print(output);
+}
+
+****************************************************************************************************
+
