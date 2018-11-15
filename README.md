@@ -9,3 +9,5 @@ An encrpyted filesystem implementing the FUSE interface (OSXFuse) in order to av
 ### KNN
 An implementation of data structures commonly used to support efficient K-nearest neighbor queries.
 
+### MySSL
+A variation of the secure socket layer. Implements a two-way authentication handshake and provides access to read and write methods for applications requiring network encryption. Inheritance of either the MySSLClient or the MySSLServer class provides a simple API.
