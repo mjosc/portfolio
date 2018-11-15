@@ -1,5 +1,5 @@
 # Portfolio
-A brief selection of projects built while a student of the Master of Software Development program at the University of Utah School of Computing.
+A selection of projects built at the University of Utah.
 
 ## Overview
 
