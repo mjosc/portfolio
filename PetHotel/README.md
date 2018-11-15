@@ -2,7 +2,7 @@
 
 A simulation of a pet hotel where each thread represents either a bird, a cat, or a dog. If there are any cats checked-in, no birds or dogs may check-in and vice versa. There are two versions: (1) A simple multithreaded simulation and (2) an attempt at achieving maximum fairness while minimizing loss of throughput.
 
-This implementation received 1st place in a class-wide competition for the fastest (and correct) solution.
+**This implementation received 1st place in a class-wide competition for the fastest (and correct) solution.**
 
 ## Getting Started
 
