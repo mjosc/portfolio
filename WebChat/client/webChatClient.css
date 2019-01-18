@@ -36,31 +36,14 @@
 
 .spacer {
     height: 50px;
-    /* background-color: grey; */
+
 }
 
-/*
-let group = getCookie("group");
-        group = group.toLowerCase();
-        
-        let newGroupContainer = document.getElementById("newGroup");
-        newGroupContainer.style.backgroundColor = "#1AC16F";
-        let newGroup = document.createElement("p");
-        newGroup.style.color = "#FDFDFD";
-        newGroup.style.paddingLeft = "30px";
-        newGroup.style.paddingBottom = "10px";
-        newGroup.style.paddingTop = "10px";
-        newGroupContainer.appendChild(newGroup);
-        newGroup.innerText = group;
-*/
 
 #messagePanel {
     flex: 1;
     height: 100%;
     background-color: #FDFDFD;
-    
-    /* Defines the vertical flex for the immediate children: #messageDisplay and #messageCompose. */
-
     display: flex;
     flex-direction: column;
 }
@@ -76,35 +59,7 @@ let group = getCookie("group");
     height: 80px;
     border: none;
     border-top: 1px solid #CDCDCD;
-    /*
-    display: flex;
-    flex-direction: row;
-    use these for contentEditable solution
-    */
 }
-
-/*
-#messageEditorContainer {
-    display: table;
-    height: 100%;
-    flex: 1;
-    /* testing 
-    background-color: blue;
-}
-
-#messsageEditor {
-    display: table-cell;
-    vertical-align: middle;
-    height: 100%;
-
-    /* testing
-    
-}
-
-[contenteditable]:focus {
-    outline: 0px solid transparent;
-}
-*/
 
 form {
     display: flex;
@@ -157,49 +112,8 @@ textarea {
     padding-top: 20px;
 }
 
-/* Flexbox source (horizontal):
-https://stackoverflow.com/questions/446060/css-two-divs-next-to-each-other */
-
-/* Nested flex containers & inheritence:
-https://stackoverflow.com/questions/37840646/proper-use-of-flex-properties-when-nesting-flex-containers */
-
-/* ContentEditable focus removal:
-https://stackoverflow.com/questions/2260782/how-do-i-remove-the-border-around-a-focused-contenteditable-pre */
-
-/* TextArea tricks:
-https://css-tricks.com/textarea-tricks/ */
-
-
-
 #ruler {
     visibility: hidden;
     white-space: nowrap;
     display: inline-block;
 }
-
-
-
-
-
-
-
-
-/* Create a program that will order everything by parents and children */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*  Verticle scroll information:
-    https://stackoverflow.com/questions/9707397/making-a-div-vertically-scrollable-using-css */
-
-    
