@@ -20,3 +20,6 @@ A simulation of virtual memory in the OS. The program represents a music applica
 
 ### PetHotel
 A multi-threaded simulation of a pet hotel where each thread represents either a bird, a cat, or a dog. This project received 1st place in a competition for the fastest (and correct) solution.
+
+### WebChat
+A simple messenger front- and back-end implementing web sockets. This was an introductory project to Java, JavaScript and web development in general.
