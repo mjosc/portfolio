@@ -4,7 +4,7 @@ A selection of projects built at the University of Utah.
 ## Overview
 
 ### Capstone
-An exploration of genealogical data visualizations. This project is mostly private but there are a few raw back-end playground files with an attempt to explore OrientDB's graph API alongside the SparkJava web framework. Also included are some front-end login/signup pages built with React.
+An exploration of genealogical data visualizations. This project is mostly private but included here are a few raw back-end playground files with an attempt to explore OrientDB's graph API alongside the SparkJava web framework. Also included are some front-end login/signup pages built with React.
 
 ### EncFS
 An encrpyted filesystem implementing the FUSE interface (OSXFuse) in order to avoid direct interaction with the kernel. The encryption algorithms are provided via the cryptography library.
