@@ -1,6 +1,3 @@
-# Portfolio
-A selection of projects built at the University of Utah.
-
 ## Overview
 
 ### Capstone
