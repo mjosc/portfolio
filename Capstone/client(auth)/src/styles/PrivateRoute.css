@@ -1,0 +1,14 @@
+.PrivateRoute__content-container {
+  height: 100%;
+  /* Vertically center content */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.PrivateRoute__loading {
+  font-size: 3em;
+  font-weight: 700;
+  color: #8DBECF;
+}

@@ -1,0 +1,9 @@
+.App {
+  /* TODO: Move height and min-width to child components. */
+  height: 100vh;
+  min-width: 800px;
+  background-color: #04242e;
+}
+
+
+

@@ -1,0 +1,82 @@
+.CustomForm {
+  display: flex;
+  flex-direction: column;
+}
+.CustomForm .CustomForm__content-container--error {
+  height: 1.7em;
+  /* Vertically center content. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  font-size: 0.75em;
+  font-weight: 700;
+  color: #B83B25;
+}
+
+
+.CustomForm .CustomForm__input {
+  width: 100%;
+
+  border: none;
+  border-radius: 9px;
+  outline: none;
+
+  /* margin-top: 1em; */
+  padding: 0.5em 0.75em;
+
+  font-size: 1.25em;
+  font-weight: 700;
+
+  color: #04242e;
+
+  /* Remove yellow background in Chrome. */
+  /* Remember to specify changing this in the docs (vs. background) */
+  box-shadow: inset 0 0 0px 1000px #8DBECF;
+}
+
+.CustomForm .hasError {
+  border: 2px solid #B83B25;
+}
+
+
+
+
+
+
+
+
+
+
+/* .CustomForm input:not([type='submit']) {
+  
+} */
+
+/* .CustomForm input:not([type='submit']) {
+  color: #04242e;
+} */
+
+/* .CustomForm input[type='submit'] {
+  box-shadow: none;
+  background-color: #B83B25;
+} */
+
+.CustomForm input:first-of-type {
+  margin: 0;
+}
+
+.CustomForm ::placeholder {
+  color: #1D5467;
+}
+
+.CustomForm .test {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 1.875em;
+  width: 100%;
+
+  font-weight: 700;
+  color: #B83B25;
+  background-color: black;
+}

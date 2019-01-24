@@ -1,0 +1,46 @@
+.Home {
+  height: 100%;
+  /* Vertically center content. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  /* Responsively clip outside edges of background. */
+  background-image: url('../img/bkg-move.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+.Home .Home__content-container--text {
+  text-align: center;
+  white-space: nowrap;
+}
+.Home .Home__header--title {
+  font-size: 2.56em;
+  font-weight: 700;
+  letter-spacing: 0.27em;
+  color: #5D97AA;
+}
+.Home .Home__header--tagline {
+  margin-top: 1rem;
+  font-size: 2em;
+  font-weight: 400;
+  color: #5D97AA;
+}
+.Home .Home__content-container--btn {
+  margin-top: 2.125em;
+}
+
+/************************************************/
+/* Custom class names passed to AnimatedButton. */
+/************************************************/
+
+.Home .Home__btn--left {
+  margin-right: 2em;
+}
+.Home .Home__btn--right {
+  background-color: #8DBECF;
+}
+.Home .Home__btn-animation--right {
+  background-color: #86E0FF;
+}

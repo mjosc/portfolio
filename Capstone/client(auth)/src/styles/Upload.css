@@ -1,0 +1,64 @@
+.Upload {
+  height: 100%;
+  /* Verically center content */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.Upload .Upload__content-container {
+  width: 24.375em;
+  /* Filepond is a block element. */
+  margin: auto;
+  text-align: center;
+}
+
+.Upload .Upload__header {
+  font-size: 1.75em;
+  font-weight: 700;
+  color: #8DBECF;
+}
+
+.Upload .Upload__content-container--text {
+  margin-top: 1em;
+  font-size: 1.125em;
+  font-weight: 700;
+  color: #8DBECF;
+}
+
+.Upload .Upload__link {
+  color: #1D5467;
+  text-decoration: none;
+}
+
+.Upload .filepond--root {
+  margin-top: 2.5em;
+}
+
+/* the text color of the drop label*/
+.Upload .filepond--drop-label {
+  font-family: 'karla', sans-serif;
+  font-weight: 700;
+  font-size: 1em;
+  color: #04242e;
+}
+
+/* underline color for "Browse" button */
+.Upload .filepond--label-action {
+  text-decoration-color: #04242e;
+}
+
+/* the background color of the filepond drop area */
+.Upload .filepond--panel-root {
+  background-color: #8DBECF;
+}
+
+/* the border radius of the drop area */
+.filepond--panel-root {
+  border-radius: 0.57em;
+}
+
+/* the border radius of the file item */
+.filepond--item-panel {
+  border-radius: 0.57em;
+}
