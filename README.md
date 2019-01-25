@@ -21,6 +21,9 @@ A variation of the secure socket layer. Implements a two-way authentication hand
 ### Pagify
 A simulation of virtual memory in the OS. The program represents a music application consisting of a server and multiple clients. Songs are given both a "physical" and "virtual" address. Also includes an analysis of different memory management policies.
 
+### PbmCompress
+The result of a six-person group effort to design and implement a compression system for pbm files. The focus was modularity and a microservice-esque architecture.
+
 ### PetHotel
 A multi-threaded simulation of a pet hotel where each thread represents either a bird, a cat, or a dog. This project received 1st place in a competition for the fastest (and correct) solution.
 
